@@ -3,7 +3,6 @@ CREATE OR REPLACE PROCEDURE neuer_verkauf(
     p_mitarbeiter_id INTEGER,
     p_produkt_id INTEGER,
     p_menge INTEGER,
-    p_einzelpreis NUMERIC,
     p_rabatt_prozent NUMERIC DEFAULT 0,
     p_zahlungsmethode VARCHAR DEFAULT 'Kreditkarte'
 )
@@ -11,12 +10,17 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
     v_aktueller_bestand INTEGER;
+    v_produkt_preis NUMERIC;
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM kunden WHERE kunden_id = p_kunden_id) THEN
         RAISE EXCEPTION 'Kunde mit ID % existiert nicht.', p_kunden_id;
     END IF;
     
-    SELECT bestand INTO v_aktueller_bestand
+    IF NOT EXISTS(SELECT 1 FROM mitarbeiter WHERE mitarbeiter_id = p_mitarbeiter_id) THEN
+        RAISE EXCEPTION 'Mitarbeiter mit ID % existiert nicht.', p_mitarbeiter_id;
+    END IF;
+    
+    SELECT bestand, preis INTO v_aktueller_bestand, v_produkt_preis
     FROM produkte
     WHERE produkt_id = p_produkt_id;
     
@@ -42,7 +46,7 @@ BEGIN
         p_mitarbeiter_id,
         p_produkt_id,
         p_menge,
-        p_einzelpreis,
+        v_produkt_preis,
         p_rabatt_prozent,
         p_zahlungsmethode
     );

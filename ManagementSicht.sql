@@ -1,13 +1,5 @@
 CREATE OR REPLACE VIEW v_management_kennzahlen AS
 SELECT 
-    COUNT(verkauf_id) AS anzahl_verkaeufe,
-    SUM(endbetrag) AS gesamtumsatz,
-    AVG(endbetrag) AS durchschnittlicher_verkaufswert
-FROM verkaeufe
-WHERE status = 'Abgeschlossen';
-
-CREATE OR REPLACE VIEW v_mitarbeiter_performance AS
-SELECT 
     m.mitarbeiter_id,
     m.vorname || ' ' || m.nachname AS mitarbeiter_name,
     m.position,

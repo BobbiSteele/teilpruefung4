@@ -4,10 +4,8 @@ CREATE TABLE produkte (
     kategorie VARCHAR(100) NOT NULL,
     preis NUMERIC(10, 2) NOT NULL CHECK (preis > 0),
     bestand INTEGER NOT NULL DEFAULT 0 CHECK (bestand >= 0),
-    hersteller VARCHAR(150),
     sku VARCHAR(50) UNIQUE NOT NULL,
     erstellt_am TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    aktualisiert_am TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ist_verfuegbar BOOLEAN GENERATED ALWAYS AS (bestand > 0) STORED
 );
 
@@ -15,7 +13,7 @@ CREATE TABLE kunden (
     kunden_id SERIAL PRIMARY KEY,
     vorname VARCHAR(100) NOT NULL,
     nachname VARCHAR(100) NOT NULL,
-    email VARCHAR(200) UNIQUE NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    email VARCHAR(200) UNIQUE NOT NULL,
     telefon VARCHAR(20),
     adresse TEXT,
     stadt VARCHAR(100),
@@ -36,7 +34,6 @@ CREATE TABLE mitarbeiter (
     gehalt NUMERIC(10, 2) CHECK (gehalt > 0),
     einstellungsdatum DATE NOT NULL DEFAULT CURRENT_DATE,
     ist_aktiv BOOLEAN DEFAULT TRUE,
-    filiale VARCHAR(100),
     dienstjahre INTEGER GENERATED ALWAYS AS (
         EXTRACT(YEAR FROM AGE(CURRENT_DATE, einstellungsdatum))
     ) STORED,
@@ -53,9 +50,6 @@ CREATE TABLE verkaeufe (
     gesamtsumme NUMERIC(10, 2) GENERATED ALWAYS AS (menge * einzelpreis) STORED,
     verkaufsdatum TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     rabatt_prozent NUMERIC(5, 2) DEFAULT 0 CHECK (rabatt_prozent >= 0 AND rabatt_prozent <= 100),
-    rabatt_betrag NUMERIC(10, 2) GENERATED ALWAYS AS (
-        (menge * einzelpreis) * (rabatt_prozent / 100)
-    ) STORED,
     endbetrag NUMERIC(10, 2) GENERATED ALWAYS AS (
         (menge * einzelpreis) * (1 - rabatt_prozent / 100)
     ) STORED,
