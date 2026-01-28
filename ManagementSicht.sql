@@ -9,5 +9,4 @@ SELECT
 FROM mitarbeiter m
 LEFT JOIN verkaeufe v ON m.mitarbeiter_id = v.mitarbeiter_id
     AND v.status = 'Abgeschlossen'
-GROUP BY m.mitarbeiter_id, m.vorname, m.nachname, m.position
-ORDER BY gesamtumsatz DESC;
+GROUP BY m.mitarbeiter_id, m.vorname, m.nachname, m.position;

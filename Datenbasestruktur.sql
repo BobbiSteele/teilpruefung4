@@ -34,9 +34,6 @@ CREATE TABLE mitarbeiter (
     gehalt NUMERIC(10, 2) CHECK (gehalt > 0),
     einstellungsdatum DATE NOT NULL DEFAULT CURRENT_DATE,
     ist_aktiv BOOLEAN DEFAULT TRUE,
-    dienstjahre INTEGER GENERATED ALWAYS AS (
-        EXTRACT(YEAR FROM AGE(CURRENT_DATE, einstellungsdatum))
-    ) STORED,
     provisionsrate NUMERIC(5, 2) DEFAULT 2.50 CHECK (provisionsrate >= 0 AND provisionsrate <= 100)
 );
 

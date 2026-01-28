@@ -10,4 +10,4 @@ WHERE v.verkaufsdatum >= DATE_TRUNC('quarter', CURRENT_DATE) - INTERVAL '3 month
   AND v.status = 'Abgeschlossen'
 GROUP BY p.kategorie
 HAVING COUNT(v.verkauf_id) > 10
-ORDER BY gesamtumsatz DESC;̉̉
+ORDER BY gesamtumsatz DESC;
