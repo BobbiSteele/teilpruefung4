@@ -22,7 +22,8 @@ BEGIN
     
     SELECT bestand, preis INTO v_aktueller_bestand, v_produkt_preis
     FROM produkte
-    WHERE produkt_id = p_produkt_id;
+    WHERE produkt_id = p_produkt_id
+    FOR UPDATE;
     
     IF v_aktueller_bestand IS NULL THEN
         RAISE EXCEPTION 'Produkt mit ID % existiert nicht.', p_produkt_id;

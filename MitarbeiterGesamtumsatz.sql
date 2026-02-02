@@ -10,7 +10,8 @@ BEGIN
     SELECT COALESCE(SUM(endbetrag), 0)
     INTO v_gesamtumsatz
     FROM verkaeufe
-    WHERE mitarbeiter_id = p_mitarbeiter_id;
+    WHERE mitarbeiter_id = p_mitarbeiter_id
+      AND status = 'Abgeschlossen';
     
     RETURN v_gesamtumsatz;
 END;
